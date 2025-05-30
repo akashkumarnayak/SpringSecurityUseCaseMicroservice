@@ -3,8 +3,11 @@ package org.springsecurity.microserviceusecases.authenticationauthorizationservi
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springsecurity.microserviceusecases.authenticationauthorizationservice.configs.AWSSecretKey;
+import org.springsecurity.microserviceusecases.authenticationauthorizationservice.dtos.AwsSecretManager;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -15,10 +18,12 @@ import java.util.UUID;
 @Component
 public class JwtService {
 
-    private static final String SECRET_KEY = "v0CBrvocO2i30xZV5ZWKe6STWn/KrXs3TuHY3eS699Y=";
+    @Autowired
+    private AWSSecretKey awsSecretKey;
+
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(awsSecretKey.getSecret());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

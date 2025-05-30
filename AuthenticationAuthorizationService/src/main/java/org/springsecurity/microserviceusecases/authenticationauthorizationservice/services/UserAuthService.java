@@ -58,6 +58,7 @@ public class UserAuthService {
             UserProfileDto userProfileDto1 = userProfileClient.createUserProfile(userProfileDto);
         }
         catch(FeignException ex){
+            userAuthRepository.delete(savededUser);
           throw new UserCreationException("User Profile creation failed");
         }
     }
